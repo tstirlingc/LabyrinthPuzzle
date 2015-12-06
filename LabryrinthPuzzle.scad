@@ -6,11 +6,13 @@
 // DONE:  raise bump up by the amount the pin is scaled back
 // DONE:  Add divet on outside of lid where pin is.
 // TODO:  Compute apothem of octogon to determine the correct distance to move the pin outward to make a divet
+// TODO:  Make the top have more space before the maze starts
+// TODO:  Make the bottom have more space (move the pin further into the lid)
 
 top_thickness = 2;
 bottom_thickness = 2;
 
-outside_facets = 8;
+outside_facets = 5; // octogon
 
 C_I = 19.2; // Cylinder maze inside diameter (19.2)
 C_O = 25.0; // Cylinder maze outside diameter (25)
@@ -37,11 +39,12 @@ echo("M_Hn=",M_Hn);
 lid_top_gap = 1.0;
 // layer height = 0.2mm => base_to_lid_gap = 0.6 is about right
 // layer height = 0.1mm => base_to_lid_gap = 0.5 ???
-base_to_lid_gap = 0.4;  
+base_to_lid_gap = 0.6;  
 L_I = C_O+base_to_lid_gap; // Lid inside diameter (25.7)
 L_O = H_O; // Lid outside diameter
 L_H = C_H+top_thickness+lid_top_gap; // lid height (76.3)
-L_pin_offset = M_H-(M_Hn-4)*P_S; // how far inside the lid is the pin (4.8)
+num_rows_pin_is_above_handle = 6;
+L_pin_offset = M_H-(M_Hn-num_rows_pin_is_above_handle)*P_S; // how far inside the lid is the pin (4.8)
 
 C_Ic = C_O/2-P_H;  // Cylinder inside radius of channels
 
@@ -50,8 +53,8 @@ pin_scale = 1.0;
 pin_height_scale = 0.9;
 bump_height_scale = 0.5/pin_height_scale;
 
-//lid();
-base();
+lid();
+//base();
 
 
 //pixel();
@@ -85,15 +88,18 @@ module bump()
 
 module pin()
 {
-    translate([L_I/2-P_H*pin_height_scale,0,L_pin_offset])
+    pin_height = P_H*pin_height_scale;
+    translate([L_I/2-pin_height,0,L_pin_offset])
     rotate(a=[0,90,0])
     rotate(a=[0,0,45])
-    cylinder(d1=P_I,d2=sqrt(2)*P_O,h=P_H*pin_height_scale,$fn=100);
+    cylinder(d1=P_I,d2=sqrt(2)*P_O,h=pin_height,$fn=100);
 }
 
 module divet()
 {
-    translate([(L_O/2-L_I/2)*.8,0,0])
+    alpha = 360/(2*outside_facets);
+    apothem = (L_O/2)*cos(alpha)*1.01;
+    translate([apothem-L_I/2,0,0])
     pin();
 }
 
