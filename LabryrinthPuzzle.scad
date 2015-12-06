@@ -14,7 +14,7 @@ C_H = 12.4; // Cylinder maze height (72.4)
 
 H_I = C_I; // Handle inside diameter
 H_O = 32;  // Handle outside diameter (32)
-H_H = 8; // Handle height (12.4)
+H_H = 13; // Handle height (12.4)
 
 P_I = 1; // Pixel inside diameter
 P_O = 3.0; // Pixel outside diameter (3.8)
