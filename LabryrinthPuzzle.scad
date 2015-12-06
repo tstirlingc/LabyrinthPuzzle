@@ -32,7 +32,7 @@ echo("M_Wn=",M_Wn);
 echo("M_Hn=",M_Hn);
 
 lid_top_gap = 1.0;
-base_to_lid_gap = 0.5;
+base_to_lid_gap = 0.6;
 L_I = C_O+base_to_lid_gap; // Lid inside diameter (25.7)
 L_O = H_O; // Lid outside diameter
 L_H = C_H+top_thickness+lid_top_gap; // lid height (76.3)
