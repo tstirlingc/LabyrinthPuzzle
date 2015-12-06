@@ -26,7 +26,7 @@ P_H = 1.6; // Pixel height (1.6)
 P_S = (1/sqrt(2))*P_I; // pixel tip side length
 
 M_Wn = 100;
-M_Hn = 100;
+M_Hn = 118; // 12 at top, 6 at bottom 
 M_W = P_S*M_Wn;
 M_H = P_S*M_Hn;
 echo("M_W=",M_W);
