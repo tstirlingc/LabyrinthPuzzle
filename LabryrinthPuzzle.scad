@@ -13,20 +13,25 @@ pi = 3.14159;
 
 top_thickness = 2;
 bottom_thickness = 2;
-cylinder_thickness = 1;
-lid_thickness = 2;
+cylinder_thickness = 1.2;
+lid_thickness = 3;
 
 lid_top_gap = 1.0;
 
 outside_facets = 8; // octogon
 
-P_I = 1; // Pixel inside diameter
-P_O = 2.0; // Pixel outside diameter (3.8)
+P_I = 2; // Pixel inside diameter
+P_O = 2.5; // Pixel outside diameter (3.8)
 P_H = 1.6; // Pixel height (1.6)
 P_S = (1/sqrt(2))*P_I; // pixel tip side length
 
-M_Wn = 100;
-M_Hn = 28; // 118 - 12 at top, 6 at bottom = 100 maze
+M_Wn = 50;
+// P_I=1 => 118 - 12 at top, 6 at bottom = 100 maze
+// P_I=2 => 59 - 6 at top, 3 at bottom = 50 maze
+rows_at_top = 6;
+rows_at_bottom = 3;
+M_Hn = rows_at_top + rows_at_bottom + 6; 
+
 M_W = P_S*M_Wn;
 M_H = P_S*M_Hn;
 echo("M_W=",M_W);
@@ -39,19 +44,19 @@ echo("cylinder inside diameter ",C_I);
 
 // layer height = 0.2mm => base_to_lid_gap = 0.6 is about right
 // layer height = 0.1mm => base_to_lid_gap = 0.5 ???
-base_to_lid_gap = 0.6;  
+base_to_lid_gap = 0.7;  
 
 H_I = C_I; // Handle inside diameter
 H_O = C_O+2*lid_thickness + base_to_lid_gap;  // Handle outside diameter (32)
 H_H = 13; // Handle height (12.4)
 echo("cylinder inside height ",H_H-bottom_thickness+C_H);
 echo("handle outside diameter ",H_O);
-
+echo("total outside height ",H_H+L_H);
 
 L_I = C_O+base_to_lid_gap; // Lid inside diameter (25.7)
 L_O = H_O; // Lid outside diameter
 L_H = C_H+top_thickness+lid_top_gap; // lid height (76.3)
-num_rows_pin_is_above_handle = 5;
+num_rows_pin_is_above_handle = rows_at_bottom;
 L_pin_offset = M_H-(M_Hn-num_rows_pin_is_above_handle)*P_S; // how far inside the lid is the pin (4.8)
 
 C_Ic = C_O/2-P_H;  // Cylinder inside radius of channels
@@ -61,8 +66,8 @@ pin_scale = 1.0;
 pin_height_scale = 0.9;
 bump_height_scale = 0.5/pin_height_scale;
 
-//lid();
-base();
+lid();
+//base();
 
 
 //pixel();
