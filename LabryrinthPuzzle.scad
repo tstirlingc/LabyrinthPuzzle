@@ -21,12 +21,12 @@ lid_top_gap = 1.0;
 outside_facets = 8; // octogon
 
 P_I = 1; // Pixel inside diameter
-P_O = 3.0; // Pixel outside diameter (3.8)
+P_O = 2.0; // Pixel outside diameter (3.8)
 P_H = 1.6; // Pixel height (1.6)
 P_S = (1/sqrt(2))*P_I; // pixel tip side length
 
 M_Wn = 100;
-M_Hn = 118; // 12 at top, 6 at bottom 
+M_Hn = 28; // 118 - 12 at top, 6 at bottom = 100 maze
 M_W = P_S*M_Wn;
 M_H = P_S*M_Hn;
 echo("M_W=",M_W);
@@ -37,14 +37,17 @@ C_H = M_H; // Cylinder maze height (72.4)
 C_I = C_O-2*P_H-2*cylinder_thickness; // Cylinder maze inside diameter (19.2)
 echo("cylinder inside diameter ",C_I);
 
-H_I = C_I; // Handle inside diameter
-H_O = C_O+2*lid_thickness;  // Handle outside diameter (32)
-H_H = 13; // Handle height (12.4)
-echo("cylinder inside height ",H_H-bottom_thickness+C_H);
-
 // layer height = 0.2mm => base_to_lid_gap = 0.6 is about right
 // layer height = 0.1mm => base_to_lid_gap = 0.5 ???
 base_to_lid_gap = 0.6;  
+
+H_I = C_I; // Handle inside diameter
+H_O = C_O+2*lid_thickness + base_to_lid_gap;  // Handle outside diameter (32)
+H_H = 13; // Handle height (12.4)
+echo("cylinder inside height ",H_H-bottom_thickness+C_H);
+echo("handle outside diameter ",H_O);
+
+
 L_I = C_O+base_to_lid_gap; // Lid inside diameter (25.7)
 L_O = H_O; // Lid outside diameter
 L_H = C_H+top_thickness+lid_top_gap; // lid height (76.3)
