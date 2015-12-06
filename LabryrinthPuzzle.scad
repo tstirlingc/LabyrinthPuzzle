@@ -3,6 +3,10 @@
 // Consider possibility of putting the maze on the inside of the lid.
 // Extend interior tube into the handle.
 
+// DONE:  raise bump up by the amount the pin is scaled back
+// DONE:  Add divet on outside of lid where pin is.
+// TODO:  Compute apothem of octogon to determine the correct distance to move the pin outward to make a divet
+
 top_thickness = 2;
 bottom_thickness = 2;
 
@@ -10,7 +14,7 @@ outside_facets = 8;
 
 C_I = 19.2; // Cylinder maze inside diameter (19.2)
 C_O = 25.0; // Cylinder maze outside diameter (25)
-C_H = 12.4; // Cylinder maze height (72.4)
+C_H = 24.8; // Cylinder maze height (72.4)
 
 H_I = C_I; // Handle inside diameter
 H_O = 32;  // Handle outside diameter (32)
@@ -20,7 +24,6 @@ P_I = 1; // Pixel inside diameter
 P_O = 3.0; // Pixel outside diameter (3.8)
 P_H = 1.6; // Pixel height (1.6)
 P_S = (1/sqrt(2))*P_I; // pixel tip side length
-pin_bump_offset = P_H/2;
 
 M_W = 3.14159*(C_O-2*P_H);
 M_H = C_H;
@@ -32,18 +35,20 @@ echo("M_Wn=",M_Wn);
 echo("M_Hn=",M_Hn);
 
 lid_top_gap = 1.0;
-base_to_lid_gap = 0.6;
+// layer height = 0.2mm => base_to_lid_gap = 0.6 is about right
+// layer height = 0.1mm => base_to_lid_gap = 0.5 ???
+base_to_lid_gap = 0.4;  
 L_I = C_O+base_to_lid_gap; // Lid inside diameter (25.7)
 L_O = H_O; // Lid outside diameter
 L_H = C_H+top_thickness+lid_top_gap; // lid height (76.3)
 L_pin_offset = M_H-(M_Hn-4)*P_S; // how far inside the lid is the pin (4.8)
 
-
-
 C_Ic = C_O/2-P_H;  // Cylinder inside radius of channels
 
 channel_scale = 1.0;
 pin_scale = 1.0;
+pin_height_scale = 0.9;
+bump_height_scale = 0.5/pin_height_scale;
 
 //lid();
 base();
@@ -71,10 +76,25 @@ module pixel()
 
 module bump()
 {
+    bump_height = P_H*bump_height_scale;
     rotate(a=[0,90,0])
     rotate(a=[0,0,45])
-    translate([0,0,P_H/2])
-    cylinder(d1=P_I,d2=sqrt(2)*P_O,h=P_H/2,$fn=4);
+    translate([0,0,bump_height])
+    cylinder(d1=P_I,d2=sqrt(2)*P_O,h=bump_height,$fn=4);
+}
+
+module pin()
+{
+    translate([L_I/2-P_H*pin_height_scale,0,L_pin_offset])
+    rotate(a=[0,90,0])
+    rotate(a=[0,0,45])
+    cylinder(d1=P_I,d2=sqrt(2)*P_O,h=P_H*pin_height_scale,$fn=100);
+}
+
+module divet()
+{
+    translate([(L_O/2-L_I/2)*.8,0,0])
+    pin();
 }
 
 module handle()
@@ -97,19 +117,25 @@ module lid()
     rotate(a=[180,0,0])
     translate([0,0,H_H])
     {
-        rotate(a=[0,0,360/(outside_facets*2)])
+        difference() 
         {
-            difference()
+            union()
             {
-                cylinder(d=L_O,h=L_H,$fn=outside_facets);
-                translate([0,0,-top_thickness])
+                rotate(a=[0,0,360/(outside_facets*2)])
                 {
-                    cylinder(d=L_I,h=L_H,$fn=100);
+                    difference()
+                    {
+                        cylinder(d=L_O,h=L_H,$fn=outside_facets);
+                        translate([0,0,-top_thickness])
+                        {
+                            cylinder(d=L_I,h=L_H,$fn=100);
+                        }
+                    }
                 }
+                pin();
             }
+            divet();
         }
-        translate([L_I/2-P_H,0,L_pin_offset])
-        pixel();
     }
 }
 
