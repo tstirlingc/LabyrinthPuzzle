@@ -9,6 +9,13 @@
 // DONE:  Make the top have more space before the maze starts
 // DONE:  Make the bottom have more space (move the pin further into the lid)
 
+// TODO:  Figure out how to compute the bump in a more physical and understandable way
+// TODO:  Add a recessed lanyard bar to either to top or bottom.
+// TODO:  Refactor to 4 line functions
+// TODO:  Shrink the whole thing to 85% so it matches the smaller puzzle
+
+
+
 pi = 3.14159;
 
 top_thickness = 2;
@@ -31,7 +38,8 @@ M_Wn = 40;
 // P_I=2 => 59 - 6 at top, 3 at bottom = 50 maze
 rows_at_top = 5;
 rows_at_bottom = 1;
-M_Hn = rows_at_top + rows_at_bottom + 25; 
+M_Hn = rows_at_top + rows_at_bottom + 36; 
+echo("M_Wn",M_Wn,"M_Hn",M_Hn);
 
 M_W = P_S*M_Wn;
 M_H = P_S*M_Hn;
@@ -43,9 +51,9 @@ C_H = M_H; // Cylinder maze height (72.4)
 C_I = C_O-2*P_H-2*cylinder_thickness; // Cylinder maze inside diameter (19.2)
 echo("cylinder inside diameter ",C_I);
 
-// layer height = 0.2mm => base_to_lid_gap = 0.6 is about right
+// layer height = 0.2mm => base_to_lid_gap = 0.7 is about right (0.65 is just a tad too tight)
 // layer height = 0.1mm => base_to_lid_gap = 0.5 ???
-base_to_lid_gap = 0.65;  
+base_to_lid_gap = 0.7;  
 
 H_I = C_I; // Handle inside diameter
 H_O = C_O+2*lid_thickness + base_to_lid_gap;  // Handle outside diameter (32)
