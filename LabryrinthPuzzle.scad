@@ -65,7 +65,16 @@ C_Ic = C_O/2-P_H;  // Cylinder inside radius of channels
 channel_scale = 1.0;
 pin_scale = 1.0;
 pin_height_scale = 0.9;
-bump_height_scale = 0.5/pin_height_scale;
+pin_height = P_H*pin_height_scale;
+echo("pin height",pin_height);
+//bump_height_scale = 0.5/pin_height_scale;
+//bump_height = P_H*bump_height_scale;
+//echo("bump height ",bump_height);
+//echo("bump_gap",pin_height-bump_height);
+bump_delta = -0.20;
+bump_height = pin_height + bump_delta - base_to_lid_gap;
+echo("bump_delta",bump_delta);
+echo("bump_height",bump_height);
 
 //lid();
 base();
@@ -93,16 +102,14 @@ module pixel()
 
 module bump()
 {
-    bump_height = P_H*bump_height_scale;
     rotate(a=[0,90,0])
     rotate(a=[0,0,45])
-    translate([0,0,bump_height])
+    translate([0,0,P_H-bump_height])
     cylinder(d1=P_I,d2=P_O,h=bump_height,$fn=4);
 }
 
 module pin()
 {
-    pin_height = P_H*pin_height_scale;
     translate([L_I/2-pin_height,0,L_pin_offset])
     rotate(a=[0,90,0])
     rotate(a=[0,0,45])
