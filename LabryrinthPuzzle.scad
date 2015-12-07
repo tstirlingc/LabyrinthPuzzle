@@ -5,9 +5,9 @@
 
 // DONE:  raise bump up by the amount the pin is scaled back
 // DONE:  Add divet on outside of lid where pin is.
-// TODO:  Compute apothem of octogon to determine the correct distance to move the pin outward to make a divet
-// TODO:  Make the top have more space before the maze starts
-// TODO:  Make the bottom have more space (move the pin further into the lid)
+// DONE:  Compute apothem of octogon to determine the correct distance to move the pin outward to make a divet
+// DONE:  Make the top have more space before the maze starts
+// DONE:  Make the bottom have more space (move the pin further into the lid)
 
 pi = 3.14159;
 
@@ -31,7 +31,7 @@ M_Wn = 40;
 // P_I=2 => 59 - 6 at top, 3 at bottom = 50 maze
 rows_at_top = 5;
 rows_at_bottom = 1;
-M_Hn = rows_at_top + rows_at_bottom + 6; 
+M_Hn = rows_at_top + rows_at_bottom + 25; 
 
 M_W = P_S*M_Wn;
 M_H = P_S*M_Hn;
@@ -71,7 +71,7 @@ echo("pin height",pin_height);
 //bump_height = P_H*bump_height_scale;
 //echo("bump height ",bump_height);
 //echo("bump_gap",pin_height-bump_height);
-bump_delta = -0.20;
+bump_delta = -0.00;
 bump_height = pin_height + bump_delta - base_to_lid_gap;
 echo("bump_delta",bump_delta);
 echo("bump_height",bump_height);
