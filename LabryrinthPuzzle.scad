@@ -14,6 +14,12 @@
 // TODO:  Refactor to 4 line functions
 // TODO:  Shrink the whole thing to 85% so it matches the smaller puzzle
 
+// TODO:  maze checker:  follow left wall to verify beginning to end
+// TODO:  create rotate_extrude version of pixel so it matches the curvature
+//        of the cylinder to avoid those ugly discrepancies in the stl file.
+// TODO:  Use inscribed cylinder/cone as pixel with lots of facets to make it smoother and more tactile.
+// TODO:  Try rotating the pixel 45 deg to produce an angled maze
+// TODO:  Add a bump to the wall in the lower half of the maze to make it seem like you can't solve the maze with a wall following algorithm.
 
 
 pi = 3.14159;
@@ -21,11 +27,11 @@ pi = 3.14159;
 top_thickness = 2;
 bottom_thickness = 2;
 cylinder_thickness = 1.2;
-lid_thickness = 3;
+lid_thickness = 2;
 
 lid_top_gap = 1.0;
 
-outside_facets = 8; // octogon
+outside_facets = 100; // octogon
 
 P_I = 3; // Pixel inside diameter
 P_OS = 6; // Pixel outside square side length
@@ -33,12 +39,12 @@ P_O = sqrt(2)*P_OS; // Pixel outside diameter (3.8)
 P_H = 2; // Pixel height (1.6)
 P_S = (1/sqrt(2))*P_I; // pixel tip side length
 
-M_Wn = 40;
+M_Wn = 25;
 // P_I=1 => 118 - 12 at top, 6 at bottom = 100 maze
 // P_I=2 => 59 - 6 at top, 3 at bottom = 50 maze
 rows_at_top = 5;
 rows_at_bottom = 1;
-M_Hn = rows_at_top + rows_at_bottom + 36; 
+M_Hn = rows_at_top + rows_at_bottom + 25; 
 echo("M_Wn",M_Wn,"M_Hn",M_Hn);
 
 M_W = P_S*M_Wn;
@@ -57,7 +63,7 @@ base_to_lid_gap = 0.7;
 
 H_I = C_I; // Handle inside diameter
 H_O = C_O+2*lid_thickness + base_to_lid_gap;  // Handle outside diameter (32)
-H_H = 13; // Handle height (12.4)
+H_H = 11; // Handle height (12.4)
 echo("cylinder inside height ",H_H-bottom_thickness+C_H);
 echo("handle outside diameter ",H_O);
 echo("total outside height ",H_H+L_H);
@@ -88,7 +94,6 @@ echo("bump_height",bump_height);
 base();
 
 
-//pixel();
 //handle();
 //maze();
 //lid();
@@ -101,6 +106,7 @@ module base()
     generate_maze();
 }
 
+//pixel();
 module pixel()
 {
     rotate(a=[0,90,0])
@@ -121,7 +127,7 @@ module pin()
     translate([L_I/2-pin_height,0,L_pin_offset])
     rotate(a=[0,90,0])
     rotate(a=[0,0,45])
-    cylinder(d1=P_I,d2=P_O,h=pin_height,$fn=4);
+    cylinder(d1=P_I,d2=P_OS,h=pin_height,$fn=100);
 }
 
 module divet()
